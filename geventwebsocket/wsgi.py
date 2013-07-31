@@ -69,7 +69,8 @@ def upgrade_websocket(environ, start_response, stream):
     if upgrade == 'websocket':
         connection = environ.get('HTTP_CONNECTION', '').lower()
 
-        if connection != 'upgrade':
+        # Firefox may send "Keep-alive, Upgrade"
+        if connection.find('upgrade') == -1:
             # this is not a websocket request, so we must not handle it
             return
 
