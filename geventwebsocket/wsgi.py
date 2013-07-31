@@ -64,11 +64,6 @@ def upgrade_websocket(environ, start_response, stream):
 
         return ['Unknown request method']
 
-    if environ.get('SERVER_PROTOCOL', '') != 'HTTP/1.1':
-        start_response('400 Bad Request', [])
-
-        return ['Bad protocol version']
-
     upgrade = environ.get('HTTP_UPGRADE', '').lower()
 
     if upgrade == 'websocket':
