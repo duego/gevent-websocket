@@ -280,32 +280,6 @@ class UpgradeWebsocketTestCase(unittest.TestCase):
                 ['Unknown request method']
             )
 
-    def test_http_version(self):
-        """
-        A request method != GET must result in a 400.
-        """
-        environ = {
-            'REQUEST_METHOD': 'GET'
-        }
-
-        for version in ['HTTP/0.9', 'HTTP/1.0']:
-            env = environ.copy()
-            env['SERVER_PROTOCOL'] = version
-
-            self.executed = False
-
-            def start_response(status, headers):
-                self.executed = True
-                self.assertEqual(status, '400 Bad Request')
-                self.assertEqual(headers, [])
-
-            result = wsgi.upgrade_websocket(env, start_response, None)
-
-            self.assertEqual(
-                result,
-                ['Bad protocol version']
-            )
-
     def test_set_status(self):
         """
         Setting a status != 101 in `*.upgrade_connection` must result in a
